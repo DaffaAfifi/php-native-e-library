@@ -2,8 +2,8 @@
 // Detail koneksi database
 $host = "localhost"; // Host database (biasanya localhost)
 $username = "root"; // Nama pengguna database
-$password = "father573"; // Kata sandi database
-$database = "agen_perjalanan"; // Nama database
+$password = ""; // Kata sandi database
+$database = "elibrary_app"; // Nama database
 
 // Membuat koneksi
 $koneksi = new mysqli($host, $username, $password, $database);
