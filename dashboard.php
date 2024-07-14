@@ -37,7 +37,7 @@ $sesName = $_SESSION['name'];
 <html lang="en">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>E-Library</title>
+    <title>My-Arsip</title>
     <meta
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
@@ -85,10 +85,10 @@ $sesName = $_SESSION['name'];
           <div class="logo-header" data-background-color="dark">
             <a href="dashboard.php" class="logo">
               <img
-                src="assets/img/kaiadmin/logo_light.svg"
+                src="assets/img/kaiadmin/logo-light-n.png"
                 alt="navbar brand"
                 class="navbar-brand"
-                height="20"
+                height="35"
               />
             </a>
             <div class="nav-toggle">
@@ -148,6 +148,16 @@ $sesName = $_SESSION['name'];
                   <p>Racks</p>
                 </a>
               </li>
+              <li class="" style="margin-top:330px; margin-left:30px;">
+                <a
+                  href="logout.php"
+                  class="btn btn-sm btn-danger"
+                  aria-expanded="false"
+                  style="padding: 5px 20px 0px 20px;"
+                >
+                  <p>Logout</p>
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -201,7 +211,7 @@ $sesName = $_SESSION['name'];
                   >
                     <div class="avatar-sm">
                       <img
-                        src="assets/img/profile.jpg"
+                        src="assets/img/profile.png"
                         alt="..."
                         class="avatar-img rounded-circle"
                       />
@@ -217,7 +227,7 @@ $sesName = $_SESSION['name'];
                         <div class="user-box">
                           <div class="avatar-lg">
                             <img
-                              src="assets/img/profile.jpg"
+                              src="assets/img/profile.png"
                               alt="image profile"
                               class="avatar-img rounded"
                             />
@@ -344,7 +354,7 @@ $sesName = $_SESSION['name'];
           <div class="container-fluid d-flex justify-content-between">
             <div class="copyright">
               2024, made with <i class="fa fa-heart heart text-danger"></i> by
-              <a href="http://www.themekita.com">ThemeKita</a>
+              <a href="">Sri Akmaliatul</a>
             </div>
           </div>
         </footer>
