@@ -333,20 +333,21 @@ $sesName = $_SESSION['name'];
                           >
                             <thead>
                               <tr>
-                                <th>Id</th>
+                                <th>No</th>
                                 <th>Rack Code</th>
                                 <th style="wdth: 10%">Action</th>
                               </tr>
                             </thead>
                             <tfoot>
                               <tr>
-                                <th>Id</th>
+                                <th>No</th>
                                 <th>Rack Code</th>
                                 <th>Action</th>
                               </tr>
                             </tfoot>
                             <tbody>
                             <?php
+                              $no = 1;
                               $query = "SELECT * FROM racks";
                               $result = mysqli_query($koneksi, $query);
 
@@ -355,7 +356,7 @@ $sesName = $_SESSION['name'];
                                   $rackCode = $row['code'];
                               ?>
                               <tr>
-                                <td><?php echo $rackID; ?></td>
+                                <td><?php echo $no++; ?></td>
                                 <td><?php echo $rackCode; ?></td>
                                 <td>
                                   <div class="form-button-action">

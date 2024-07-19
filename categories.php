@@ -333,20 +333,21 @@ $sesName = $_SESSION['name'];
                           >
                             <thead>
                               <tr>
-                                <th>Id</th>
+                                <th>No</th>
                                 <th>Category</th>
                                 <th style="width: 10%">Action</th>
                               </tr>
                             </thead>
                             <tfoot>
                               <tr>
-                                <th>Id</th>
+                                <th>No</th>
                                 <th>Category</th>
                                 <th>Action</th>
                               </tr>
                             </tfoot>
                             <tbody>
                             <?php
+                              $no = 1;
                               $query = "SELECT * FROM categories";
                               $result = mysqli_query($koneksi, $query);
 
@@ -355,7 +356,7 @@ $sesName = $_SESSION['name'];
                                   $catName = $row['name'];
                               ?>
                               <tr>
-                                <td><?php echo $catID; ?></td>
+                                <td><?php echo $no++; ?></td>
                                 <td><?php echo $catName; ?></td>
                                 <td>
                                   <div class="form-button-action">

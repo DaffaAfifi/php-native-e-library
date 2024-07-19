@@ -379,30 +379,6 @@ $sesName = $_SESSION['name'];
       <div class="col-md-3">
         <input type="text" name="search" class="form-control" placeholder="Search by title" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
       </div>
-      <div class="col-md-3">  
-        <select name="category" id="categoryFilter" class="form-select">
-          <?php
-          $catQuery = "SELECT category_id, name FROM categories";
-          $catResult = mysqli_query($koneksi, $catQuery);
-          while ($catRow = mysqli_fetch_array($catResult)) {
-            $selected = (isset($_GET['category']) && $_GET['category'] == $catRow['category_id']) ? 'selected' : '';
-            echo "<option value='" . $catRow['category_id'] . "' $selected>" . $catRow['name'] . "</option>";
-          }
-          ?>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <select name="rack" id="rackFilter" class="form-select">
-          <?php
-          $rackQuery = "SELECT rack_id, code FROM racks";
-          $rackResult = mysqli_query($koneksi, $rackQuery);
-          while ($rackRow = mysqli_fetch_array($rackResult)) {
-            $selected = (isset($_GET['rack']) && $_GET['rack'] == $rackRow['rack_id']) ? 'selected' : '';
-            echo "<option value='" . $rackRow['rack_id'] . "' $selected>" . $rackRow['code'] . "</option>";
-          }
-          ?>
-        </select>
-      </div>
       <div class="col-md-2">
         <button type="submit" class="btn btn-primary">Apply Filter</button>
       </div>
@@ -414,7 +390,7 @@ $sesName = $_SESSION['name'];
     <table id="add-row" class="display table table-striped table-hover">
       <thead>
         <tr>
-          <th>Id</th>
+          <th>No</th>
           <th>Title</th>
           <th>Author</th>
           <th>Release</th>
@@ -425,25 +401,16 @@ $sesName = $_SESSION['name'];
       </thead>
       <tbody>
       <?php
+        $no = 1;
         $query = "SELECT b.*, c.name AS category_name, r.code AS rack_name 
                   FROM books b 
                   JOIN categories c ON b.category_id = c.category_id 
                   JOIN racks r ON b.rack_id = r.rack_id 
                   WHERE 1=1";
 
-if (isset($_GET['search']) && $_GET['search'] !== '') {
-  $search = mysqli_real_escape_string($koneksi, $_GET['search']);
-  $query .= " AND b.title LIKE '%$search%'";
-}
-
-        if (isset($_GET['category']) && $_GET['category'] !== '') {
-          $category = mysqli_real_escape_string($koneksi, $_GET['category']);
-          $query .= " AND b.category_id = '$category'";
-        }
-
-        if (isset($_GET['rack']) && $_GET['rack'] !== '') {
-          $rack = mysqli_real_escape_string($koneksi, $_GET['rack']);
-          $query .= " AND b.rack_id = '$rack'";
+        if (isset($_GET['search']) && $_GET['search'] !== '') {
+          $search = mysqli_real_escape_string($koneksi, $_GET['search']);
+          $query .= " AND (b.title LIKE '%$search%' OR c.name LIKE '%$search%' OR r.code LIKE '%$search%')";
         }
 
         $result = mysqli_query($koneksi, $query);
@@ -451,7 +418,7 @@ if (isset($_GET['search']) && $_GET['search'] !== '') {
         while ($row = mysqli_fetch_array($result)) {
       ?>
         <tr>
-          <td><?php echo $row['book_id']; ?></td>
+          <td><?php echo $no++; ?></td>
           <td><?php echo $row['title']; ?></td>
           <td><?php echo $row['author']; ?></td>
           <td><?php echo $row['release']; ?></td>
@@ -459,27 +426,27 @@ if (isset($_GET['search']) && $_GET['search'] !== '') {
           <td><?php echo $row['rack_name']; ?></td>
           <td>
           <div class="form-button-action">
-                                    <button
-                                      type="button"
-                                      data-bs-toggle="modal"
-                                      title=""
-                                      class="btn btn-link btn-primary btn-lg"
-                                      data-original-title="Edit Task"
-                                      data-bs-target="#updateModal<?php echo $row['book_id'] ?>"
-                                    >
-                                      <i class="fa fa-edit"></i>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      data-bs-toggle="modal"
-                                      title=""
-                                      class="btn btn-link btn-danger"
-                                      data-original-title="Remove"
-                                      data-bs-target="#deleteModal<?php echo $row['book_id'] ?>"
-                                    >
-                                      <i class="fa fa-times"></i>
-                                    </button>
-                                  </div>
+            <button
+              type="button"
+              data-bs-toggle="modal"
+              title=""
+              class="btn btn-link btn-primary btn-lg"
+              data-original-title="Edit Task"
+              data-bs-target="#updateModal<?php echo $row['book_id'] ?>"
+            >
+              <i class="fa fa-edit"></i>
+            </button>
+            <button
+              type="button"
+              data-bs-toggle="modal"
+              title=""
+              class="btn btn-link btn-danger"
+              data-original-title="Remove"
+              data-bs-target="#deleteModal<?php echo $row['book_id'] ?>"
+            >
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
           </td>
         </tr>
       <?php
@@ -506,17 +473,7 @@ if (isset($_GET['search']) && $_GET['search'] !== '') {
 
         if (isset($_GET['search']) && $_GET['search'] !== '') {
         $search = mysqli_real_escape_string($koneksi, $_GET['search']);
-        $query .= " AND b.title LIKE '%$search%'";
-        }
-
-        if (isset($_GET['category']) && $_GET['category'] !== '') {
-        $category = mysqli_real_escape_string($koneksi, $_GET['category']);
-        $query .= " AND b.category_id = '$category'";
-        }
-
-        if (isset($_GET['rack']) && $_GET['rack'] !== '') {
-        $rack = mysqli_real_escape_string($koneksi, $_GET['rack']);
-        $query .= " AND b.rack_id = '$rack'";
+        $query .= " AND (b.title LIKE '%$search%' OR c.name LIKE '%$search%' OR r.code LIKE '%$search%')";
         }
 
         $result = mysqli_query($koneksi, $query);
