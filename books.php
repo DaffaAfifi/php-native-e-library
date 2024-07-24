@@ -118,16 +118,6 @@ $sesName = $_SESSION['name'];
                   <p>Categories</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a
-                  href="racks.php"
-                  class="collapsed"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-table"></i>
-                  <p>Racks</p>
-                </a>
-              </li>
               <li class="" style="margin-top:330px; margin-left:30px;">
                 <a
                   href="logout.php"
@@ -312,7 +302,7 @@ $sesName = $_SESSION['name'];
                                       <div class="form-group form-group-default">
                                         <label>Release Year</label>
                                         <input
-                                          id="addOffice"
+                                          id="addRelease"
                                           type="text"
                                           class="form-control"
                                           placeholder="fill release year"
@@ -338,20 +328,16 @@ $sesName = $_SESSION['name'];
                                     <div class="col-md-6">
                                       <div class="form-group form-group-default">
                                         <label>Rack</label>
-                                        <select name="rack" id="rackFilter" class="form-select">
-                                          <?php
-                                          $rackQuery = "SELECT rack_id, code FROM racks";
-                                          $rackResult = mysqli_query($koneksi, $rackQuery);
-                                          while ($rackRow = mysqli_fetch_array($rackResult)) {
-                                            $selected = (isset($_GET['rack']) && $_GET['rack'] == $rackRow['rack_id']) ? 'selected' : '';
-                                            echo "<option value='" . $rackRow['rack_id'] . "' $selected>" . $rackRow['code'] . "</option>";
-                                          }
-                                          ?>
-                                        </select>
+                                        <input
+                                          id="addRack"
+                                          type="text"
+                                          class="form-control"
+                                          placeholder="fill rack"
+                                          name="rack"
+                                        />
                                       </div>
                                     </div>
                                   </div>
-                                
                               </div>
                               <div class="modal-footer border-0">
                                 <button
@@ -396,21 +382,21 @@ $sesName = $_SESSION['name'];
           <th>Release</th>
           <th>Category</th>
           <th>Rack</th>
+          <th>File</th>
           <th style="width: 10%">Action</th>
         </tr>
       </thead>
       <tbody>
       <?php
         $no = 1;
-        $query = "SELECT b.*, c.name AS category_name, r.code AS rack_name 
+        $query = "SELECT b.*, c.name AS category_name
                   FROM books b 
-                  JOIN categories c ON b.category_id = c.category_id 
-                  JOIN racks r ON b.rack_id = r.rack_id 
+                  JOIN categories c ON b.category_id = c.category_id
                   WHERE 1=1";
 
         if (isset($_GET['search']) && $_GET['search'] !== '') {
           $search = mysqli_real_escape_string($koneksi, $_GET['search']);
-          $query .= " AND (b.title LIKE '%$search%' OR c.name LIKE '%$search%' OR r.code LIKE '%$search%')";
+          $query .= " AND (b.title LIKE '%$search%' OR b.author LIKE '%$search%' OR b.release LIKE '%$search%' OR c.name LIKE '%$search%' or b.rack LIKE '%$search%')";
         }
 
         $result = mysqli_query($koneksi, $query);
@@ -423,7 +409,18 @@ $sesName = $_SESSION['name'];
           <td><?php echo $row['author']; ?></td>
           <td><?php echo $row['release']; ?></td>
           <td><?php echo $row['category_name']; ?></td>
-          <td><?php echo $row['rack_name']; ?></td>
+          <td><?php echo $row['rack']; ?></td>
+          <td>
+        <?php if (!empty($row['file_path'])): ?>
+          <!-- Display file path as a link if it exists -->
+          <a href="<?php echo htmlspecialchars($row['file_path']); ?>" target="_blank">
+            View
+          </a>
+        <?php else: ?>
+          <!-- Optional: Display a message or leave it blank if no file path -->
+          -
+        <?php endif; ?>
+      </td>
           <td>
           <div class="form-button-action">
             <button
@@ -446,6 +443,16 @@ $sesName = $_SESSION['name'];
             >
               <i class="fa fa-times"></i>
             </button>
+            <button
+              type="button"
+              data-bs-toggle="modal"
+              title=""
+              class="btn btn-link btn-success btn-lg"
+              data-original-title="Upload File"
+              data-bs-target="#uploadModal<?php echo $row['book_id'] ?>"
+            >
+              <i class="fa fa-upload"></i>
+            </button>
           </div>
           </td>
         </tr>
@@ -465,21 +472,41 @@ $sesName = $_SESSION['name'];
         </div>
 
         <?php
-        $query = "SELECT b.*, c.name AS category_name, r.code AS rack_name 
+        $query = "SELECT b.*, c.name AS category_name
                   FROM books b 
-                  JOIN categories c ON b.category_id = c.category_id 
-                  JOIN racks r ON b.rack_id = r.rack_id 
+                  JOIN categories c ON b.category_id = c.category_id
                   WHERE 1=1";
 
         if (isset($_GET['search']) && $_GET['search'] !== '') {
         $search = mysqli_real_escape_string($koneksi, $_GET['search']);
-        $query .= " AND (b.title LIKE '%$search%' OR c.name LIKE '%$search%' OR r.code LIKE '%$search%')";
+        $query .= " AND (b.title LIKE '%$search%' OR b.author LIKE '%$search%' OR b.release LIKE '%$search%' OR c.name LIKE '%$search%' or b.rack LIKE '%$search%')";
         }
 
         $result = mysqli_query($koneksi, $query);
 
         while ($row = mysqli_fetch_array($result)) {
         ?>
+
+        <div class="modal fade" id="uploadModal<?php echo $row['book_id'] ?>" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalLabel">Upload File</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="upload.php" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="book_id" value="<?php echo $row['book_id'] ?>">
+                  <div class="mb-3">
+                    <label for="fileUpload" class="form-label">Choose file to upload</label>
+                    <input class="form-control" type="file" id="fileUpload" name="fileUpload" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- Edit Modal -->
         <div
@@ -570,20 +597,17 @@ $sesName = $_SESSION['name'];
                                     <div class="col-md-6">
                                       <div class="form-group form-group-default">
                                         <label>Rack</label>
-                                        <select name="rack" id="rackFilter" class="form-select">
-                                          <?php
-                                          $rackQuery = "SELECT rack_id, code FROM racks";
-                                          $rackResult = mysqli_query($koneksi, $rackQuery);
-                                          while ($rackRow = mysqli_fetch_array($rackResult)) {
-                                            $selected = (isset($_GET['rack']) && $_GET['rack'] == $rackRow['rack_id']) ? 'selected' : '';
-                                            echo "<option value='" . $rackRow['rack_id'] . "' $selected>" . $rackRow['code'] . "</option>";
-                                          }
-                                          ?>
-                                        </select>
+                                        <input
+                                          id="addOffice"
+                                          type="text"
+                                          class="form-control"
+                                          placeholder="fill rack"
+                                          name="rack"
+                                          value="<?php echo $row['rack'] ?>"
+                                        />
                                       </div>
                                     </div>
-                                  </div>
-                                
+                                  </div>   
                               </div>
                               <div class="modal-footer border-0">
                                 <button

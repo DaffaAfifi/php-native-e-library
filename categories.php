@@ -118,16 +118,6 @@ $sesName = $_SESSION['name'];
                   <p>Categories</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a
-                  href="racks.php"
-                  class="collapsed"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-table"></i>
-                  <p>Racks</p>
-                </a>
-              </li>
               <li class="" style="margin-top:330px; margin-left:30px;">
                 <a
                   href="logout.php"

@@ -25,9 +25,6 @@ $totalBooks = countTotal($koneksi, 'books');
 // Menghitung total categories
 $totalCategories = countTotal($koneksi, 'categories');
 
-// Menghitung total racks
-$totalRacks = countTotal($koneksi, 'racks');
-
 $sesID = $_SESSION['id'];
 $sesEmail = $_SESSION['email'];
 $sesName = $_SESSION['name'];
@@ -136,16 +133,6 @@ $sesName = $_SESSION['name'];
                 >
                   <i class="fas fa-th-list"></i>
                   <p>Categories</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a
-                  href="racks.php"
-                  class="collapsed"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-table"></i>
-                  <p>Racks</p>
                 </a>
               </li>
               <li class="" style="margin-top:330px; margin-left:30px;">
@@ -319,27 +306,6 @@ $sesName = $_SESSION['name'];
                         <div class="numbers">
                           <p class="card-category">Categories</p>
                           <h4 class="card-title"><?php echo $totalCategories; ?></h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-md-3">
-                <div class="card card-stats card-round">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-icon">
-                        <div
-                          class="icon-big text-center icon-secondary bubble-shadow-small"
-                        >
-                          <i class="fa fa-table"></i>
-                        </div>
-                      </div>
-                      <div class="col col-stats ms-3 ms-sm-0">
-                        <div class="numbers">
-                          <p class="card-category">Racks</p>
-                          <h4 class="card-title"><?php echo $totalRacks; ?></h4>
                         </div>
                       </div>
                     </div>

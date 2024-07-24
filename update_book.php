@@ -8,10 +8,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $author = mysqli_real_escape_string($koneksi, $_POST['author']);
     $release_year = intval($_POST['release']);
     $category_id = intval($_POST['category']);
-    $rack_code_id = intval($_POST['rack']);
+    $rack_code_id = mysqli_real_escape_string($koneksi, $_POST['rack']);
 
     // Query untuk mengupdate destinasi
-    $query = "UPDATE books SET title = '$title', author = '$author', `release` = '$release_year', category_id = '$category_id', rack_id = '$rack_code_id' WHERE book_id = '$id'";
+    $query = "UPDATE books SET title = '$title', author = '$author', `release` = '$release_year', category_id = '$category_id', rack = '$rack_code_id' WHERE book_id = '$id'";
     $result = mysqli_query($koneksi, $query);
 
     if (mysqli_query($koneksi, $query)) {
