@@ -135,7 +135,7 @@ $sesName = $_SESSION['name'];
                   <p>Categories</p>
                 </a>
               </li>
-              <li class="" style="margin-top:330px; margin-left:30px;">
+              <li class="" style="margin-top:450px; margin-left:30px;">
                 <a
                   href="logout.php"
                   class="btn btn-sm btn-danger"
@@ -313,7 +313,20 @@ $sesName = $_SESSION['name'];
                 </div>
               </div>
             </div>
-          </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-header">
+                      <h4 class="card-title">Statistik Perpustakaan</h4>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-container">
+                        <canvas id="pieChart"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
 
         <footer class="footer">
@@ -522,6 +535,45 @@ $sesName = $_SESSION['name'];
       <!-- End Custom template -->
     </div>
     <!--   Core JS Files   -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var ctx = document.getElementById('pieChart').getContext('2d');
+    var pieChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Admin', 'Books', 'Categories'],
+        datasets: [{
+          data: [<?php echo $totalAdmin; ?>, <?php echo $totalBooks; ?>, <?php echo $totalCategories; ?>],
+          backgroundColor: [
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(255, 206, 86, 0.8)'
+          ],
+          borderColor: [
+            'rgba(54, 162, 235, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(255, 206, 86, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+          title: {
+            display: true,
+            text: 'Distribusi Data Perpustakaan'
+          }
+        }
+      }
+    });
+  });
+</script>
     <script src="assets/js/core/jquery-3.7.1.min.js"></script>
     <script src="assets/js/core/popper.min.js"></script>
     <script src="assets/js/core/bootstrap.min.js"></script>

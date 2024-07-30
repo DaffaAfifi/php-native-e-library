@@ -118,7 +118,7 @@ $sesName = $_SESSION['name'];
                   <p>Categories</p>
                 </a>
               </li>
-              <li class="" style="margin-top:330px; margin-left:30px;">
+              <li class="" style="margin-top:450px; margin-left:30px;">
                 <a
                   href="logout.php"
                   class="btn btn-sm btn-danger"
