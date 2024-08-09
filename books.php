@@ -322,7 +322,7 @@ $sesName = $_SESSION['name'];
 
                             if (isset($_GET['search']) && $_GET['search'] !== '') {
                               $search = mysqli_real_escape_string($koneksi, $_GET['search']);
-                              $query .= " AND (b.title LIKE '%$search%' OR b.author LIKE '%$search%' OR b.release LIKE '%$search%' OR b.description LIKE '%$search%' OR c.name LIKE '%$search%' OR c.description LIKE '%$search%' or b.rack LIKE '%$search%')";
+                              $query .= " AND (b.title LIKE '%$search%' OR b.author LIKE '%$search%' OR b.release LIKE '%$search%' OR b.description LIKE '%$search%' OR c.name LIKE '%$search%' OR b.description LIKE '%$search%' or b.rack LIKE '%$search%')";
                             }
 
                             $result = mysqli_query($koneksi, $query);
@@ -391,7 +391,7 @@ $sesName = $_SESSION['name'];
 
       if (isset($_GET['search']) && $_GET['search'] !== '') {
         $search = mysqli_real_escape_string($koneksi, $_GET['search']);
-        $query .= " AND (b.title LIKE '%$search%' OR b.author LIKE '%$search%' OR b.release LIKE OR b.description LIKE '%$search%' '%$search%' OR c.name LIKE '%$search%' or b.rack LIKE '%$search%')";
+        $query .= " AND (b.title LIKE '%$search%' OR b.author LIKE '%$search%' OR b.release LIKE '%$search%' OR b.description LIKE '%$search%'  OR c.name LIKE '%$search%' or b.rack LIKE '%$search%')";
       }
 
       $result = mysqli_query($koneksi, $query);
